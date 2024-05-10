@@ -12,7 +12,7 @@ const url = process.env.MONGO_URL;
 app.use(bodyParser.json());
 app.use(cors());
 
-//app.use("/api", authRoutes);
+app.use("/api", authRoutes);
 
 //Starta applikationen
 app.listen(port, () => {
