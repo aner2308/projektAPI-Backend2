@@ -2,6 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const authRoutes = require("./routes/authRoutes");
+const menuRoutes = require("./routes/menuRoutes");
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
 require("dotenv").config();
@@ -13,6 +14,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 app.use("/api", authRoutes);
+app.use("/api", menuRoutes);
 
 //Starta applikationen
 app.listen(port, () => {

@@ -1,4 +1,3 @@
-//Routes för auth
 const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
@@ -12,7 +11,6 @@ mongoose.connect(process.env.MONGO_URL).then(() => {
 }).catch((error) => {
     console.error("Fel vid koppling till databasen...")
 });
-
 
 //Användar model
 const User = require("../models/User");
