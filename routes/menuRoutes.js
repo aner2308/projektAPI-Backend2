@@ -16,7 +16,7 @@ mongoose.connect(process.env.MONGO_URL).then(() => {
 const Menu = require("../models/Menu");
 
 //Lägg till nytt på menyn
-router.post("/menu", async (req, res) => {
+router.post("/menu", authenticateToken, async (req, res) => {
     try {
         // Skapa ett nytt jobbobjekt med data från begäran
         const newItem = new Menu({
@@ -36,7 +36,7 @@ router.post("/menu", async (req, res) => {
     }
 });
 
-router.get("/menu", authenticateToken, async (req, res) => {
+router.get("/menu", async (req, res) => {
     try {
         // Hämta alla jobb från databasen
         const menus = await Menu.find();
@@ -45,6 +45,37 @@ router.get("/menu", authenticateToken, async (req, res) => {
     } catch (error) {
         console.error("Fel vid hämtning av menyobjekt:", error);
         res.status(500).json({ message: "Ett fel uppstod när jobben skulle hämtas från databasen." });
+    }
+});
+
+// PUT för att uppdatera en befintlig jobbpost
+router.put("/menu/:id", authenticateToken, async (req, res) => {
+    try {
+        const itemId = req.params.id;
+        const updatedItem = req.body;
+
+        const result = await Menu.findByIdAndUpdate(itemId, updatedItem, { new: true });
+
+        return res.json(result);
+    } catch (error) {
+        return res.status(400).json({ message: "Det uppstod ett fel vid uppdatering av menyobjektet.", error: error });
+    }
+});
+
+// DELETE för att ta bort en befintlig jobbpost
+router.delete("/menu/:id", authenticateToken, async (req, res) => {
+    try {
+        const itemId = req.params.id;
+
+        const result = await Menu.findByIdAndDelete(itemId);
+
+        if (!result) {
+            return res.status(404).json({ message: "Menyobjektet hittades inte..." });
+        }
+
+        return res.json({ message: "Menyobjektet har tagits bort." });
+    } catch (error) {
+        return res.status(400).json({ message: "Det uppstod ett fel vid borttagning av menyobjektet.", error: error });
     }
 });
 
