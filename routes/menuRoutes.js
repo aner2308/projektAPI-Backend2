@@ -22,6 +22,7 @@ router.post("/menu", authenticateToken, async (req, res) => {
         const newItem = new Menu({
             name: req.body.name,
             category: req.body.category,
+            subcategory: req.body.subcategory,
             price: req.body.price,
             description: req.body.description,
         });
